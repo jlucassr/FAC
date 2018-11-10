@@ -8,7 +8,11 @@ def main():
     num = float(input("Digite um numero : "))
     parcela = 0
 
-    if(num >= 0 and num < 1):
+    if(num == 0):
+        final = pi/2
+        print(final)
+
+    if(num > 0 and num < 1):
         x = 1 #contador
         potencia = pow(10,-12)
         #print(potencia)

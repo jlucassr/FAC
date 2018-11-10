@@ -79,7 +79,7 @@ loopMenor1:
 	
 	mov.d $f14, $f28 #move o valor calculado para $f14
 	li $a0, 2 # carrega como imediato o valor 2 
-	mul $a0, $t0, $a0 # calcula 2*j
+	mul $a0, $t0, $a0 # calcula 2*j sendo que j representa a parcela
 	addi $a0, $a0, 1 # calcula (-2*j-1)
 	mov.d $f30, $f0 # move o resultado para $f30 para calcula a potencia
 	jal potencia # va para potencia
@@ -108,8 +108,8 @@ parcelaPositivaMenor1:
 	
 	c.lt.d $f6, $f14
 	bc1f endLoopMenor1 # caso parcela < limite sai do loop
-	slt $t5, $t0, $t1
-	bnez $t5, loopMenor1
+	slt $s4, $t0, $t1
+	bnez $s4, loopMenor1
 
 endLoopMenor1:
 	# funcao que finaliza o calculo do arco cotangente caso seja menor que 1
@@ -132,7 +132,7 @@ loopMaior1:
 	
 	mov.d $f14, $f28 #move o valor calculado para $f14
 	li $a0, -2  # carrega como imediato o valor de -2 
-	mul $a0, $a0, $t0 # calcula -2*j
+	mul $a0, $a0, $t0 # calcula -2*j sendo que j eh parcela
 	li $t6, 1
 	sub $a0, $a0, $t6 # calcula (-2*j-1)
 	mov.d $f30, $f0 # move o resultado para $f30 para calcula a potencia
@@ -161,8 +161,8 @@ parcelaPositivaMaior1:
 	 # funcao para verificar parcela < limite, 
 	c.lt.d $f10, $f14
 	bc1f fim
-	slt $t5, $t0, $t1
-	bnez $t5, loopMaior1
+	slt $s4, $t0, $t1
+	bnez $s4, loopMaior1
 	
 potencia:
 	#funcao para calcular a potencia 
@@ -198,8 +198,7 @@ fimLoopPotencia:
 
 return:
 	jr $ra
-
-	
+		
 # O valor do resultado do arccot devera ser escrito em $f12
 	
 # =================== IMPLEMENTE AQUI SUA SOLUCAO: FIM      
@@ -207,7 +206,7 @@ fim:
       jal  print            # call print routine. 
       li   $v0, 10          # system call for exit
       syscall               # we are out of here.
-		
+      
 #########  routine to print messages
       .data
 
@@ -220,7 +219,7 @@ limiteExp:	.double  0.00000000001 # limite da exponencial 10^(-12)
 pi:		.double  3.14159265358
 space:		.asciiz  " "          # space
 new_line:	.asciiz  "\n"         # newline
-string_ARCCOT:	.asciiz  "arccot= "
+string_ARCCOT:	.asciiz  "arc-cot = "
 valor:		.asciiz  "\nDigite o valor: "
 erro:		.asciiz  "Erro, digite um numero maior ou igual a 0"
 
@@ -232,4 +231,7 @@ print:	la   $a0, string_ARCCOT
 	li   $v0, 3           	# specify Print Double service
       	syscall               	# print $t0
 
-	
+# Repetindo essa parte apenas para o Spim compilar o programa sem problemas
+	li   $v0, 10          # system call for exit
+      	syscall               # we are out of here.
+      
